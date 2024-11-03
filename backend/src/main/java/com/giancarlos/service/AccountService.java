@@ -21,7 +21,6 @@ public class AccountService {
 
     public Account register(Account account) {
         return accountRepository.save(account);
-
     }
 
     public String verify(Account account) {
