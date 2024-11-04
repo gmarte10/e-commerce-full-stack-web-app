@@ -1,6 +1,6 @@
 SET SEARCH_PATH TO ecommerce_schema;
 
-INSERT INTO customer (name, email, password)
+INSERT INTO account (name, username, password)
 VALUES 
 	(
 	'John Doe',
@@ -23,7 +23,7 @@ VALUES
 	('straws', 2),
 	('socks', 8);
 
-INSERT INTO cart (customer_id, product_id)
+INSERT INTO cart_item (account_id, product_id)
 VALUES 
 	(1, 3),
 	(1, 2),
