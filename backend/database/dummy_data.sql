@@ -5,12 +5,21 @@ VALUES
 	(
 	'John Doe',
 	'johndoe34@gmail.com',
-	'joker!4'
+	'$2a$12$GTTpwqerXlWwEdxfcqdnHu/twcmNQVbm/doHo/WDd7XNdSk3JlaG6'
 	),
 	(
 	'Jane Doe',
 	'janedoe499@gmail.com',
-	'$7harley'
+	'$2a$12$GlXXZdzTHvk8IB3t1rq27eE7glIWjTbwb/ArLOVcxywXcaW59ZaT6'
+	);
+
+INSERT INTO account (name, username, password, account_role)
+VALUES
+	(
+	'Bruce Wayne',
+	'brucewayne@gmail.com',
+	'$2a$12$hNDiq2a8rHFxggCngAwJF.uqpAn01UJYEzYt570sXOycWhlN1aP1O',
+	1
 	);
 
 INSERT INTO product (name, price, description, image)

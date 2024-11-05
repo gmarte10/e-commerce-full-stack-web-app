@@ -5,6 +5,7 @@ import com.giancarlos.model.CartItem;
 import com.giancarlos.repository.CartItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,5 +28,10 @@ public class CartItemService {
 
     public void removeProductFromCart(CartItem cartItem) {
         cartItemRepository.deleteById(cartItem.getId());
+    }
+
+    @Transactional
+    public void removeProductFromAllCarts(int productId) {
+        cartItemRepository.deleteByProductId(productId);
     }
 }
