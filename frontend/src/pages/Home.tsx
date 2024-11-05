@@ -1,4 +1,4 @@
-import { Button, ListGroup } from "react-bootstrap";
+import { Button, Container, ListGroup, Nav, Navbar } from "react-bootstrap";
 import axiosInstance from "../components/api/axiosInstance";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -28,6 +28,12 @@ const Home = () => {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    navigate("/login");
+  }
+
   const handleAddToCart = async (id: number) => {
     const username = localStorage.getItem("username");
     try {
@@ -51,7 +57,7 @@ const Home = () => {
 
   const handleGoToCart = () => {
     navigate("/cart");
-  }
+  };
 
   useEffect(() => {
     getProducts();
@@ -59,6 +65,19 @@ const Home = () => {
 
   return (
     <>
+      <Navbar expand="lg" className="bg-body-tertiary">
+        <Container>
+          <Navbar.Brand href="#home">
+            E-Commerce-Full-Stack-Web-App
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto">
+              <Button onClick={handleLogout}>Logout</Button>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
       <ListGroup>
         {products.map((product) => (
           <ListGroup.Item key={product.id}>
@@ -70,9 +89,7 @@ const Home = () => {
           </ListGroup.Item>
         ))}
       </ListGroup>
-      <Button onClick={handleGoToCart}>
-        Go To Cart
-      </Button>
+      <Button onClick={handleGoToCart}>Go To Cart</Button>
     </>
   );
 };

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Button, ListGroup } from "react-bootstrap";
+import { Button, Container, ListGroup, Nav, Navbar } from "react-bootstrap";
 import axiosInstance from "../components/api/axiosInstance";
+import { useNavigate } from "react-router-dom";
 
 interface Product {
   id: number;
@@ -11,6 +12,7 @@ interface Product {
 const Cart = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const username = localStorage.getItem("username");
+  const navigate = useNavigate();
 
   const getProductsFromCart = async () => {
     try {
@@ -36,8 +38,8 @@ const Cart = () => {
 
   const removeOneProductFromList = (id: number) => {
     // Find the index of the last occurrence of the id
-    const lastIndex = products.map(product => product.id).lastIndexOf(id);
-    
+    const lastIndex = products.map((product) => product.id).lastIndexOf(id);
+
     // If the id exists, remove it
     if (lastIndex !== -1) {
       // Create a new array excluding the last occurrence
@@ -49,8 +51,7 @@ const Cart = () => {
       // Update state with the new array
       setProducts(updatedProducts);
     }
-
-  }
+  };
 
   const handleOnRemoveFromCart = async (id: number) => {
     const username = localStorage.getItem("username");
@@ -73,7 +74,11 @@ const Cart = () => {
     }
   };
 
-
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    navigate("/login");
+  };
 
   useEffect(() => {
     getProductsFromCart();
@@ -81,13 +86,26 @@ const Cart = () => {
 
   return (
     <>
+      <Navbar expand="lg" className="bg-body-tertiary">
+        <Container>
+          <Navbar.Brand href="#home">
+            E-Commerce-Full-Stack-Web-App
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto">
+              <Button onClick={handleLogout}>Logout</Button>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
       <ListGroup>
         {products.map((product, index) => (
           <ListGroup.Item key={index}>
             <p>Name: {product.name}</p>
             <p>Price: {product.price}</p>
-            <Button onClick = {() => handleOnRemoveFromCart(product.id)}>
-                Remove From Cart
+            <Button onClick={() => handleOnRemoveFromCart(product.id)}>
+              Remove From Cart
             </Button>
           </ListGroup.Item>
         ))}
