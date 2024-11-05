@@ -7,6 +7,9 @@ interface Product {
   id: number;
   name: string;
   price: number;
+  description: string;
+  image: string;
+  imageData?: string;
 }
 
 const Cart = () => {
@@ -28,9 +31,15 @@ const Cart = () => {
         }
       );
       console.log(response.data);
+      const productsWithImg = await Promise.all(
+        response.data.map(async (product) => {
+          const imageData = await getImages(product.image);
+          return { ...product, imageData };
+        })
+      )
 
-      setProducts(response.data);
-      console.log(products);
+      setProducts(productsWithImg);
+      // console.log(products);
     } catch (error) {
       console.log(error);
     }
@@ -69,6 +78,7 @@ const Cart = () => {
       );
       console.log(response.data);
       removeOneProductFromList(id);
+      
     } catch (error) {
       console.log(error);
     }
@@ -83,6 +93,41 @@ const Cart = () => {
   useEffect(() => {
     getProductsFromCart();
   }, []);
+
+  const getImages = async (image: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axiosInstance.get(`/images/${image}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        responseType: "blob",
+      });
+      const base64Data = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(response.data);
+      });
+      return base64Data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const loadImages = async () => {
+    try {
+      const productsWithImages = await Promise.all(
+        products.map(async (product) => {
+          const imageData = await getImages(product.image);
+          return { ...product, imageData };
+        })
+      );
+      setProducts(productsWithImages);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -104,6 +149,8 @@ const Cart = () => {
           <ListGroup.Item key={index}>
             <p>Name: {product.name}</p>
             <p>Price: {product.price}</p>
+            <p>Description: {product.description}</p>
+            <img src={product.imageData} alt={product.image} />
             <Button onClick={() => handleOnRemoveFromCart(product.id)}>
               Remove From Cart
             </Button>

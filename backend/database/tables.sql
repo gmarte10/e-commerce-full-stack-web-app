@@ -7,7 +7,9 @@ DROP TABLE IF EXISTS product;
 CREATE TABLE IF NOT EXISTS product (
 	product_id SERIAL PRIMARY KEY,
 	name varchar(100),
-	price int
+	price int,
+	description varchar(100),
+	image varchar(500)
 );
 
 CREATE TABLE IF NOT EXISTS account (

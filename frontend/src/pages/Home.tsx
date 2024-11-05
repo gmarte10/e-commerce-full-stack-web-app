@@ -7,6 +7,9 @@ interface Product {
   id: number;
   name: string;
   price: number;
+  description: string;
+  image: string;
+  imageData?: string;
 }
 
 const Home = () => {
@@ -32,7 +35,7 @@ const Home = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
     navigate("/login");
-  }
+  };
 
   const handleAddToCart = async (id: number) => {
     const username = localStorage.getItem("username");
@@ -55,6 +58,41 @@ const Home = () => {
     }
   };
 
+  const getImages = async (image: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axiosInstance.get(`/images/${image}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        responseType: "blob",
+      });
+      const base64Data = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(response.data);
+      });
+      return base64Data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const loadImages = async () => {
+    try {
+      const productsWithImages = await Promise.all(
+        products.map(async (product) => {
+          const imageData = await getImages(product.image);
+          return { ...product, imageData };
+        })
+      );
+      setProducts(productsWithImages);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleGoToCart = () => {
     navigate("/cart");
   };
@@ -63,6 +101,12 @@ const Home = () => {
     getProducts();
   }, []);
 
+  useEffect(() => {
+    if (products.length > 0) {
+      loadImages();
+    }
+  }, [products]);
+  
   return (
     <>
       <Navbar expand="lg" className="bg-body-tertiary">
@@ -83,6 +127,8 @@ const Home = () => {
           <ListGroup.Item key={product.id}>
             <p>Name: {product.name}</p>
             <p>Price: {product.price}</p>
+            <p>Description: {product.description}</p>
+            <img src={product.imageData} alt={product.image} />
             <Button onClick={() => handleAddToCart(product.id)}>
               Add To Cart
             </Button>
