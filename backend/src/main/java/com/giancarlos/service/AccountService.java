@@ -32,4 +32,9 @@ public class AccountService {
             return "Failed to authenticate";
         }
     }
+
+    public int getAccountId(String username) {
+        Account account = accountRepository.findByUsername(username);
+        return account.getId();
+    }
 }

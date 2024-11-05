@@ -1,6 +1,5 @@
 package com.giancarlos.config;
 
-
 import com.giancarlos.config.filter.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -34,32 +33,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-        /*
-        ---Explanation for lambdas used below
-        // Customizer<...> is a functional interface, which means you can use lambda as shown
-        // Same for authorizeHttpRequests, httpBasic()
-        Customizer<CsrfConfigurer<HttpSecurity>> custCsrf = new Customizer<CsrfConfigurer<HttpSecurity>>() {
-            @Override
-            public void customize(CsrfConfigurer<HttpSecurity> customizer) {
-                customizer.disable();
-            }
-        };
-        httpSecurity.csrf(custCsrf);
-        return httpSecurity.build();
-
-        ---Written out without builder pattern(.x notation as shown below)
-        httpSecurity.csrf(customizer -> customizer.disable());
-        httpSecurity.authorizeHttpRequests(request -> request.anyRequest().authenticated());
-        httpSecurity.formLogin(Customizer.withDefaults());
-        httpSecurity.httpBasic(Customizer.withDefaults());
-        httpSecurity.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-         */
-
-
         return httpSecurity
+                .cors(Customizer.withDefaults())
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("register", "login") // Register and login endpoints don't need credentials
+                        .requestMatchers("/register", "/login") // Register and login endpoints don't need credentials
                         .permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
@@ -68,6 +46,7 @@ public class SecurityConfig {
                 .build();
 
     }
+
 
     @Bean
     public AuthenticationProvider authenticationProvider() {

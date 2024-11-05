@@ -1,7 +1,9 @@
 package com.giancarlos.controller;
 
+import com.giancarlos.model.Account;
 import com.giancarlos.model.CartItem;
 import com.giancarlos.model.Product;
+import com.giancarlos.service.AccountService;
 import com.giancarlos.service.CartItemService;
 import com.giancarlos.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -16,18 +19,33 @@ public class CartItemController {
     @Autowired
     private CartItemService cartItemService;
 
+    @Autowired
+    private AccountService accountService;
+
+    @Autowired
+    private ProductService productService;
+
     @GetMapping("/cartItem")
-    public ResponseEntity<List<CartItem>> getAllCartItemsByAccountId(@RequestParam int accountId) {
-        return new ResponseEntity<>(cartItemService.getAllCartItemsByAccountId(accountId), HttpStatus.OK);
+    public ResponseEntity<List<Product>> getAllCartItemsByAccountId(@RequestParam String username) {
+        int accountId = accountService.getAccountId(username);
+        List<CartItem> cartItems = cartItemService.getAllCartItemsByAccountId(accountId);
+        List<Product> products = new ArrayList<>();
+        for (CartItem item : cartItems) {
+            Product product = productService.findProductById(item.getProductId());
+            products.add(product);
+        }
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
-    @PostMapping("/cartItem/{accountId}/{productId}")
-    public ResponseEntity<CartItem> addProductToCart(@PathVariable int accountId, @PathVariable int productId) {
+    @PostMapping("/cartItem/{username}/{productId}")
+    public ResponseEntity<CartItem> addProductToCart(@PathVariable String username, @PathVariable int productId) {
+        int accountId = accountService.getAccountId(username);
         return new ResponseEntity<>(cartItemService.addProductToCart(accountId, productId), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/cartItem/{accountId}/{productId}")
-    public ResponseEntity<String> removeProductFromCart(@PathVariable int accountId, @PathVariable int productId) {
+    @DeleteMapping("/cartItem/{username}/{productId}")
+    public ResponseEntity<String> removeProductFromCart(@PathVariable String username, @PathVariable int productId) {
+        int accountId = accountService.getAccountId(username);
         List<CartItem> cartItems = cartItemService.getAllCartItemsByAccountId(accountId);
         CartItem itemToDelete = null;
         for (CartItem item : cartItems) {
