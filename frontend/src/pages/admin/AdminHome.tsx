@@ -85,6 +85,10 @@ const AdminHome = () => {
     }
   };
 
+  const handleAddProduct = () => {
+    navigate("/addProduct");
+  }
+
   return (
     <>
       <Navbar expand="lg" className="bg-body-tertiary">
@@ -113,7 +117,7 @@ const AdminHome = () => {
           </ListGroup.Item>
         ))}
       </ListGroup>
-      <Button>Add a product</Button>
+      <Button onClick={handleAddProduct}>Add a product</Button>
     </>
   );
 };
