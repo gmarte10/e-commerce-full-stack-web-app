@@ -41,12 +41,6 @@ public class ProductController {
         return new ResponseEntity<>(productService.findProductById(productId), HttpStatus.OK);
     }
 
-    @PostMapping("/products")
-    public ResponseEntity<Product> addProductToDb(@RequestBody Product product) {
-        Product p = productService.addProductToDb(product);
-        return new ResponseEntity<>(p, HttpStatus.CREATED);
-    }
-
     @PostMapping("/products/add")
     public ResponseEntity<Product> addProductToDataBase(@RequestParam("name") String name,
                                                         @RequestParam("price") int price,
@@ -59,6 +53,11 @@ public class ProductController {
                 Files.createDirectories(uploadPath);
             }
             String fileName = imageFile.getOriginalFilename();
+            assert fileName != null;
+            String[] split = fileName.split("\\.");
+            String extension = split[1];
+            fileName = name.replace(' ', '-');
+            fileName = fileName + '.' + extension;
             Path imagePath = uploadPath.resolve(fileName);
             imageFile.transferTo(imagePath.toFile());
             Product product = new Product();
