@@ -2,6 +2,8 @@ import { Button, Container, ListGroup, Nav, Navbar } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../components/api/axiosInstance";
 import { useEffect, useState } from "react";
+import useGetImage from "../../hooks/useGetImage";
+import useLogout from "../../hooks/useLogout";
 
 interface Product {
   id: number;
@@ -9,12 +11,15 @@ interface Product {
   price: number;
   description: string;
   image: string;
-  imageData?: string;
+  imageData?: string | null;
 }
 
 const AdminHome = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const navigate = useNavigate();
+  const getImage = useGetImage();
+  const logout = useLogout();
+
   const getProductsFromCart = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -25,9 +30,10 @@ const AdminHome = () => {
         },
       });
       console.log(response.data);
+
       const productsWithImg = await Promise.all(
         response.data.map(async (product) => {
-          const imageData = await getImages(product.image);
+          const imageData = await getImage(product.image);
           return { ...product, imageData };
         })
       );
@@ -35,33 +41,6 @@ const AdminHome = () => {
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const getImages = async (image: string) => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axiosInstance.get(`/images/${image}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        responseType: "blob",
-      });
-      const base64Data = await new Promise<string>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result as string);
-        reader.onerror = reject;
-        reader.readAsDataURL(response.data);
-      });
-      return base64Data;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-    navigate("/login");
   };
 
   useEffect(() => {
@@ -97,7 +76,7 @@ const AdminHome = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Button onClick={handleLogout}>Logout</Button>
+              <Button onClick={logout}>Logout</Button>
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -108,7 +87,7 @@ const AdminHome = () => {
             <p>Name: {product.name}</p>
             <p>Price: {product.price}</p>
             <p>Description: {product.description}</p>
-            <img src={product.imageData} alt={product.image} />
+            {product.imageData && <img src={product.imageData} alt={product.image} />}
             <Button onClick={() => handleRemoveProduct(product.id)}>
               Remove Product
             </Button>
