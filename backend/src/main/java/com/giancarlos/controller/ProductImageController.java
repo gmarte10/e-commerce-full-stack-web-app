@@ -14,13 +14,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @RestController
-public class ImageController {
+public class ProductImageController {
     @Value("${upload.dir}")
     private String uploadDir;
 
     @GetMapping("/images/{imageName}")
     public ResponseEntity<Resource> getImage(@PathVariable String imageName) throws MalformedURLException {
-        Path path = Paths.get(uploadDir + "/" + imageName);
+        Path path = Paths.get(uploadDir, imageName);
         Resource resource = new UrlResource(path.toUri());
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(resource);
     }

@@ -19,6 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 public class ProductController {
@@ -46,27 +47,19 @@ public class ProductController {
                                                         @RequestParam("price") int price,
                                                         @RequestParam("description") String description,
                                                         @RequestParam("image")MultipartFile imageFile) {
-
         try {
             Path uploadPath = Paths.get(System.getProperty("user.dir"), uploadDir);
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
+            System.out.println("Upload Directory: " + uploadDir);
             String fileName = imageFile.getOriginalFilename();
             assert fileName != null;
-            String[] split = fileName.split("\\.");
-            String extension = split[1];
-            fileName = name.replace(' ', '-');
-            fileName = fileName + '.' + extension;
+            System.out.println("Original File Name: " + fileName);
             Path imagePath = uploadPath.resolve(fileName);
             imageFile.transferTo(imagePath.toFile());
-            Product product = new Product();
-            product.setName(name);
-            product.setPrice(price);
-            product.setDescription(description);
-            product.setImage(fileName);
-
-            Product savedProduct = productService.addProductToDb(product);
+            Product toSave = new Product(name, price, description, fileName);
+            Product savedProduct = productService.addProductToDb(toSave);
             return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
         } catch(IOException e) {
             e.printStackTrace();
