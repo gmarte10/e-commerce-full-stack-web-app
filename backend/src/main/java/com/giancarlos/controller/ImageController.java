@@ -1,5 +1,6 @@
 package com.giancarlos.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
@@ -14,9 +15,12 @@ import java.nio.file.Paths;
 
 @RestController
 public class ImageController {
+    @Value("${upload.dir}")
+    private String uploadDir;
+
     @GetMapping("/images/{imageName}")
     public ResponseEntity<Resource> getImage(@PathVariable String imageName) throws MalformedURLException {
-        Path path = Paths.get("src/main/resources/images/" + imageName);
+        Path path = Paths.get(uploadDir + "/" + imageName);
         Resource resource = new UrlResource(path.toUri());
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(resource);
     }
