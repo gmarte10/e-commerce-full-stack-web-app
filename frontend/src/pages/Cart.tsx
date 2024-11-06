@@ -38,7 +38,7 @@ const Cart = () => {
         })
       )
       setProducts(productsWithImg);
-      console.log(products);
+      console.log(productsWithImg);
     } catch (error) {
       console.log(error);
     }
