@@ -26,6 +26,10 @@ public class CartItemService {
         return cartItemRepository.save(cartItem);
     }
 
+    public CartItem addProductToCart(CartItem item) {
+        return cartItemRepository.save(item);
+    }
+
     public void removeProductFromCart(CartItem cartItem) {
         cartItemRepository.deleteById(cartItem.getId());
     }

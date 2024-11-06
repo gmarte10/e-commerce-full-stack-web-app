@@ -18,14 +18,19 @@ const Login = () => {
       localStorage.setItem("token", response.data);
       localStorage.setItem("username", username);
       // console.log("After setting: " + localStorage.getItem("token"));
-      const response2 = await axiosInstance.get(`/role/${username}`, {
+      const response2 = await axiosInstance.get(`/user/info/${username}`, {
         headers: {
           Authorization: `Bearer ${response.data}`,
         },
       });
       console.log(response2.data);
+      const role = response2.data[0];
+      const id = response2.data[1];
+      console.log("ROLE: " + role);
+      console.log("ID: " + id);
+      localStorage.setItem("account_id", id);
 
-      if (response2.data === 1) {
+      if (role === 1) {
         navigate("/adminHome");
       }
       else {

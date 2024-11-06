@@ -37,6 +37,12 @@ public class CartItemController {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
+    // Could not get this to work, foreign key constraint error
+    @PostMapping("/cartItem")
+    public ResponseEntity<CartItem> addProductToCart(@RequestBody CartItem cartItem) {
+        return new ResponseEntity<>(cartItemService.addProductToCart(cartItem), HttpStatus.CREATED);
+    }
+
     @PostMapping("/cartItem/{username}/{productId}")
     public ResponseEntity<CartItem> addProductToCart(@PathVariable String username, @PathVariable int productId) {
         int accountId = accountService.getAccountId(username);

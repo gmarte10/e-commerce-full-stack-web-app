@@ -8,6 +8,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @Service
 public class AccountService {
     @Autowired
@@ -38,8 +42,10 @@ public class AccountService {
         return account.getId();
     }
 
-    public int getAccountRole(String username) {
+    public List<Integer> getAccountInfo(String username) {
         Account account = accountRepository.findByUsername(username);
-        return account.getRole();
+        int role = account.getRole();
+        int accountId = account.getId();
+        return Arrays.asList(role, accountId);
     }
 }

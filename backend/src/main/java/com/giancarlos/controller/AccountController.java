@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @RestController
 public class AccountController {
@@ -29,8 +32,9 @@ public class AccountController {
         return accountService.verify(account);
     }
 
-    @GetMapping("/role/{username}")
-    public ResponseEntity<Integer> getAccountRole(@PathVariable String username) {
-        return new ResponseEntity<>(accountService.getAccountRole(username), HttpStatus.OK);
+    @GetMapping("/user/info/{username}")
+    public ResponseEntity<List<Integer>> getAccountInfo(@PathVariable String username) {
+        List<Integer> info = accountService.getAccountInfo(username);
+        return new ResponseEntity<>(info, HttpStatus.OK);
     }
 }

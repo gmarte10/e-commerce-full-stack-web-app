@@ -5,6 +5,7 @@ const useLogout = () => {
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
+    localStorage.removeItem("account_id");
     navigate("/login");
   };
   return logout;
