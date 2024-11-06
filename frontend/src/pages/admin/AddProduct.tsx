@@ -3,7 +3,9 @@ import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import axiosInstance from "../../components/api/axiosInstance";
 import { useNavigate } from "react-router-dom";
+import CustomFormGroup from "../../components/CustomFormGroup";
 
+// Find a way to simplify attributes and their handleChanges
 const AddProduct = () => {
     const [name, setName] = useState("");
     const [price, setPrice] = useState("");
@@ -56,40 +58,36 @@ const AddProduct = () => {
 
     return (<>
      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="formBasicProductName">
-          <Form.Label>Product Name</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Name"
-            value={name}
-            onChange={handleNameChange}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicPrice">
-          <Form.Label>Product Price</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Price"
-            value={price}
-            onChange={handlePriceChange}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicDescription">
-          <Form.Label>Product Description</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Description"
-            value={description}
-            onChange={handleDescriptionChange}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicImage">
-          <Form.Label>Product Image</Form.Label>
-          <Form.Control
-            type="file"
-            onChange={handleImageChange}
-          />
-        </Form.Group>
+     <CustomFormGroup
+                label="Product Name"
+                type="text"
+                value={name}
+                handleChange={handleNameChange}
+                placeholder="Name"
+                controlId="formBasicProductName"
+            />
+            <CustomFormGroup
+                label="Product Price"
+                type="text"
+                value={price}
+                handleChange={handlePriceChange}
+                placeholder="Price"
+                controlId="formBasicPrice"
+            />
+            <CustomFormGroup
+                label="Product Description"
+                type="text"
+                value={description}
+                handleChange={handleDescriptionChange}
+                placeholder="Description"
+                controlId="formBasicDescription"
+            />
+            <CustomFormGroup
+                label="Product Image"
+                type="file"
+                handleChange={handleImageChange}
+                controlId="formBasicImage"
+            />
         <Button variant="primary" type="submit">
           Upload Product
         </Button>

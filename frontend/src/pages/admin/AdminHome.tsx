@@ -31,9 +31,7 @@ const AdminHome = () => {
           return { ...product, imageData };
         })
       );
-
       setProducts(productsWithImg);
-      // console.log(products);
     } catch (error) {
       console.log(error);
     }
