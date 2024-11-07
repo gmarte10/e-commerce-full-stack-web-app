@@ -1,12 +1,16 @@
 SET SEARCH_PATH TO ecommerce_schema;
 
-INSERT INTO account (name, username, password)
+INSERT INTO account (name, username, password, address)
 VALUES 
 	(
 	'John Doe',
 	'johndoe34@gmail.com',
-	'$2a$12$GTTpwqerXlWwEdxfcqdnHu/twcmNQVbm/doHo/WDd7XNdSk3JlaG6'
-	),
+	'$2a$12$GTTpwqerXlWwEdxfcqdnHu/twcmNQVbm/doHo/WDd7XNdSk3JlaG6',
+	'Arkham Asylum, Gotham'
+	);
+
+INSERT INTO account (name, username, password)
+VALUES 	
 	(
 	'Jane Doe',
 	'janedoe499@gmail.com',

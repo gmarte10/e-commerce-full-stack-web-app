@@ -42,6 +42,11 @@ public class AccountService {
         return account.getId();
     }
 
+    public String getAccountAddress(String username) {
+        Account account = accountRepository.findByUsername(username);
+        return account.getAddress();
+    }
+
     public List<Integer> getAccountInfo(String username) {
         Account account = accountRepository.findByUsername(username);
         int role = account.getRole();

@@ -18,7 +18,8 @@ CREATE TABLE IF NOT EXISTS account (
 	name varchar(100) NOT NULl,
 	username varchar(100) UNIQUE NOT NULL,
 	password varchar(500) NOT NULL,
-	account_role int DEFAULT 0
+	account_role int DEFAULT 0,
+	address varchar(100)
 );
 
 CREATE TABLE IF NOT EXISTS cart_item (

@@ -37,4 +37,10 @@ public class AccountController {
         List<Integer> info = accountService.getAccountInfo(username);
         return new ResponseEntity<>(info, HttpStatus.OK);
     }
+
+    @GetMapping("/address/{username}")
+    public ResponseEntity<String> getAccountEmail(@PathVariable String username) {
+        String address = accountService.getAccountAddress(username);
+        return new ResponseEntity<>(address, HttpStatus.OK);
+    }
 }
