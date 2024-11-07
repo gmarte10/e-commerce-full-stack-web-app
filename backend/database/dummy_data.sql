@@ -68,3 +68,15 @@ VALUES
 	(2, 3),
 	(2, 1),
 	(1, 2);
+
+INSERT INTO category (name)
+VALUES
+	('technology'),
+	('clothing'),
+	('pets');
+
+INSERT INTO product_to_category (product_id, category_id)
+VALUES 
+	(1, 1),
+	(2, 2),
+	(3, 3);
