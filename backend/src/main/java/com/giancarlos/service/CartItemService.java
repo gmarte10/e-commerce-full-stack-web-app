@@ -26,6 +26,7 @@ public class CartItemService {
         return cartItemRepository.save(cartItem);
     }
 
+    // I get foreign key errors
     public CartItem addProductToCart(CartItem item) {
         return cartItemRepository.save(item);
     }

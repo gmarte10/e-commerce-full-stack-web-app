@@ -79,6 +79,7 @@ const Home = () => {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
               <Button onClick={logout}>Logout</Button>
+              <Button onClick={() => navigate("/orders")}>Orders</Button>
             </Nav>
           </Navbar.Collapse>
         </Container>

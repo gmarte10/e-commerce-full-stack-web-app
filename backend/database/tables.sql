@@ -1,5 +1,6 @@
 SET SEARCH_PATH TO ecommerce_schema;
 
+DROP TABLE IF EXISTS order_item;
 DROP TABLE IF EXISTS cart_item;
 DROP TABLE IF EXISTS account;
 DROP TABLE IF EXISTS product;
@@ -24,6 +25,14 @@ CREATE TABLE IF NOT EXISTS account (
 
 CREATE TABLE IF NOT EXISTS cart_item (
 	cart_item_id SERIAL PRIMARY KEY,
+	account_id int,
+	product_id int,
+	CONSTRAINT product_fk FOREIGN KEY(product_id) REFERENCES product(product_id),
+	CONSTRAINT account_fk FOREIGN KEY(account_id) REFERENCES account(account_id)
+);
+
+CREATE TABLE IF NOT EXISTS order_item (
+	order_item_id SERIAL PRIMARY KEY,
 	account_id int,
 	product_id int,
 	CONSTRAINT product_fk FOREIGN KEY(product_id) REFERENCES product(product_id),

@@ -60,3 +60,11 @@ VALUES
 	(1, 3),
 	(2, 1),
 	(2, 2);
+
+INSERT INTO order_item (account_id, product_id)
+VALUES 
+	(2, 3),
+	(1, 2),
+	(2, 3),
+	(2, 1),
+	(1, 2);
