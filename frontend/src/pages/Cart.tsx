@@ -36,7 +36,7 @@ const Cart = () => {
           const imageData = await getImage(product.image);
           return { ...product, imageData };
         })
-      )
+      );
       setProducts(productsWithImg);
       console.log(productsWithImg);
     } catch (error) {
@@ -75,7 +75,6 @@ const Cart = () => {
       );
       console.log(response.data);
       removeOneProductFromList(id);
-      
     } catch (error) {
       console.log(error);
     }
@@ -106,7 +105,9 @@ const Cart = () => {
             <p>Name: {product.name}</p>
             <p>Price: {product.price}</p>
             <p>Description: {product.description}</p>
-            {product.imageData && <img src={product.imageData} alt={product.image} />}
+            {product.imageData && (
+              <img src={product.imageData} alt={product.image} />
+            )}
             <Button onClick={() => handleOnRemoveFromCart(product.id)}>
               Remove From Cart
             </Button>

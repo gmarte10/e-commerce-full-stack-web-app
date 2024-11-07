@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import axiosInstance from "../components/api/axiosInstance";
 import { useNavigate } from "react-router-dom";
+import CustomFormGroup from "../components/CustomFormGroup";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -10,33 +11,30 @@ const Login = () => {
 
   const loginAccount = async () => {
     try {
-      const response = await axiosInstance.post(`/login`, {
+      const loginResponse = await axiosInstance.post(`/login`, {
         username: username,
         password: password,
       });
-      // console.log("Before setting: " + localStorage.getItem("token"));
-      localStorage.setItem("token", response.data);
+      localStorage.setItem("token", loginResponse.data);
       localStorage.setItem("username", username);
-      // console.log("After setting: " + localStorage.getItem("token"));
-      const response2 = await axiosInstance.get(`/user/info/${username}`, {
+
+      const infoResponse = await axiosInstance.get(`/user/info/${username}`, {
         headers: {
-          Authorization: `Bearer ${response.data}`,
+          Authorization: `Bearer ${loginResponse.data}`,
         },
       });
-      console.log(response2.data);
-      const role = response2.data[0];
-      const id = response2.data[1];
+      console.log(infoResponse.data);
+      const role = infoResponse.data[0];
+      const id = infoResponse.data[1];
       console.log("ROLE: " + role);
       console.log("ID: " + id);
       localStorage.setItem("account_id", id);
 
       if (role === 1) {
         navigate("/adminHome");
-      }
-      else {
+      } else {
         navigate("/home");
       }
-      // console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -58,24 +56,22 @@ const Login = () => {
   return (
     <>
       <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter email"
-            value={username}
-            onChange={handleUsernameChange}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={handlePasswordChange}
-          />
-        </Form.Group>
+        <CustomFormGroup
+          label="Email"
+          type="email"
+          value={username}
+          handleChange={handleUsernameChange}
+          placeholder="Enter email"
+          controlId="formBasicEmail"
+        />
+        <CustomFormGroup
+          label="Password"
+          type="password"
+          value={password}
+          handleChange={handlePasswordChange}
+          placeholder="Password"
+          controlId="formBasicPassword"
+        />
         <Button variant="primary" type="submit">
           Login
         </Button>

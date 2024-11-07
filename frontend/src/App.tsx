@@ -18,8 +18,8 @@ function App() {
             <Route path="register" element={<Register />} />
             <Route path="home" element={<Home />} />
             <Route path="cart" element={<Cart />} />
-            <Route path="adminHome" element={<AdminHome/>} />
-            <Route path="addProduct" element={<AddProduct/>} />
+            <Route path="adminHome" element={<AdminHome />} />
+            <Route path="addProduct" element={<AddProduct />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import axiosInstance from "../components/api/axiosInstance";
 import { useNavigate } from "react-router-dom";
+import CustomFormGroup from "../components/CustomFormGroup";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -18,7 +19,6 @@ const Register = () => {
       });
       console.log(response.data);
       navigate("/login");
-      
     } catch (error) {
       console.log(error);
     }
@@ -44,33 +44,30 @@ const Register = () => {
   return (
     <>
       <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="formBasicText">
-          <Form.Label>Your Name</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Name"
-            value={name}
-            onChange={handleNameChange}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter email"
-            value={username}
-            onChange={handleUsernameChange}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={handlePasswordChange}
-          />
-        </Form.Group>
+        <CustomFormGroup
+          label="You Name"
+          type="text"
+          value={name}
+          handleChange={handleNameChange}
+          placeholder="Name"
+          controlId="formBasicName"
+        />
+        <CustomFormGroup
+          label="Email"
+          type="email"
+          value={username}
+          handleChange={handleUsernameChange}
+          placeholder="Enter email"
+          controlId="formBasicEmail"
+        />
+        <CustomFormGroup
+          label="Password"
+          type="password"
+          value={password}
+          handleChange={handlePasswordChange}
+          placeholder="Password"
+          controlId="formBasicPassword"
+        />
         <Button variant="primary" type="submit">
           Register
         </Button>

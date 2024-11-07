@@ -64,7 +64,7 @@ const AdminHome = () => {
 
   const handleAddProduct = () => {
     navigate("/addProduct");
-  }
+  };
 
   return (
     <>
@@ -87,7 +87,9 @@ const AdminHome = () => {
             <p>Name: {product.name}</p>
             <p>Price: {product.price}</p>
             <p>Description: {product.description}</p>
-            {product.imageData && <img src={product.imageData} alt={product.image} />}
+            {product.imageData && (
+              <img src={product.imageData} alt={product.image} />
+            )}
             <Button onClick={() => handleRemoveProduct(product.id)}>
               Remove Product
             </Button>

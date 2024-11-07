@@ -33,7 +33,7 @@ const Home = () => {
           const imageData = await getImage(product.image);
           return { ...product, imageData };
         })
-      )
+      );
       setProducts(productsWithImg);
       console.log(productsWithImg);
     } catch (error) {
@@ -67,7 +67,7 @@ const Home = () => {
   useEffect(() => {
     getProducts();
   }, []);
-  
+
   return (
     <>
       <Navbar expand="lg" className="bg-body-tertiary">
@@ -89,7 +89,9 @@ const Home = () => {
             <p>Name: {product.name}</p>
             <p>Price: {product.price}</p>
             <p>Description: {product.description}</p>
-            {product.imageData && <img src={product.imageData} alt={product.image} />}
+            {product.imageData && (
+              <img src={product.imageData} alt={product.image} />
+            )}
             <Button onClick={() => handleAddToCart(product.id)}>
               Add To Cart
             </Button>

@@ -8,10 +8,11 @@ CREATE TABLE IF NOT EXISTS product (
 	product_id SERIAL PRIMARY KEY,
 	name varchar(100),
 	price int,
-	description varchar(100),
+	description varchar(500),
 	image varchar(500)
 );
 
+-- ROLE: 0 = customer, 1 = admin
 CREATE TABLE IF NOT EXISTS account (
 	account_id SERIAL PRIMARY KEY,
 	name varchar(100) NOT NULl,
